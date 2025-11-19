@@ -46,7 +46,7 @@
       100% { transform: translateY(110vh) translateX(20px); }
     }
 
-    /* 🔧 Mode test (VISIBLE pour la présentation) */
+    /* 🔧 Mode test (VISIBLE) */
     .test-panel {
       position: fixed;
       top: 10px;
@@ -179,10 +179,6 @@
       text-align: center;
       animation: fadeIn 0.2s ease-out;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
 
     .modal img {
       width: 100%;
@@ -209,7 +205,13 @@
       color: #fff;
     }
 
-    .legal { margin-top: 4px; font-size: 0.65rem; opacity: 0.85; }
+    .legal-offer {
+      font-size: 0.7rem;
+      opacity: 0.85;
+      margin-top: 10px;
+      line-height: 1.3;
+    }
+
   </style>
 </head>
 <body>
@@ -229,7 +231,7 @@
   }
 </script>
 
-<!-- Mode test VISIBLE pour la démo -->
+<!-- Mode test VISIBLE -->
 <div class="test-panel" id="test-panel">
   Test&nbsp;:
   <select id="simulate-day">
@@ -273,13 +275,6 @@
     </div>
 
     <div class="calendar-grid" id="calendar-grid"></div>
-
-    <p class="footer-note">
-      Offres valables dans les restaurants d’Amiens centre-ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025<br>
-      <span class="legal">
-        Offres non cumulables, valables dans la limite des stocks disponibles. Photos non contractuelles. Voir conditions détaillées en restaurant.
-      </span>
-    </p>
   </section>
 </div>
 
@@ -290,6 +285,10 @@
     <h2 id="modal-title"></h2>
     <img id="modal-image" src="" alt="">
     <p id="modal-text"></p>
+    <p class="legal-offer">
+      Offre disponible via l’onglet Avantages en borne ou sur l’application McDo+.<br>
+      Offre non cumulable, valable uniquement le jour indiqué.
+    </p>
   </div>
 </div>
 
@@ -321,20 +320,18 @@
   let simulatedDay = null;
 
   function getBaseDate() {
-    if (simulatedDay) return new Date(CALENDAR_YEAR, 11, simulatedDay);
-    return new Date();
+    return simulatedDay ? new Date(CALENDAR_YEAR, 11, simulatedDay) : new Date();
   }
 
   function getDayStatus(day) {
     const base = getBaseDate();
-    const baseMidnight = new Date(base);
-    baseMidnight.setHours(0,0,0,0);
+    base.setHours(0,0,0,0);
 
     const openDate = new Date(CALENDAR_YEAR, 11, day);
     openDate.setHours(0,0,0,0);
 
-    if (baseMidnight < openDate) return "locked";
-    if (baseMidnight.getTime() === openDate.getTime()) return "current";
+    if (base < openDate) return "locked";
+    if (base.getTime() === openDate.getTime()) return "current";
     return "expired";
   }
 
@@ -387,7 +384,7 @@
     } else {
       title.textContent = "Offre expirée";
       img.src = IMAGES.expired;
-      text.textContent = "Cette offre était valable uniquement le " + formatDateFr(day) + ".";
+      text.textContent = "Cette offre était valable le " + formatDateFr(day) + " uniquement.";
     }
 
     modal.classList.add("active");
@@ -396,11 +393,11 @@
   document.getElementById("modal-close").addEventListener("click", () => {
     document.getElementById("offer-modal-backdrop").classList.remove("active");
   });
+
   document.getElementById("offer-modal-backdrop").addEventListener("click", (e) => {
     if (e.target.id === "offer-modal-backdrop") e.target.classList.remove("active");
   });
 
-  // Mode test visible : changement du jour simulé
   document.getElementById("simulate-day").addEventListener("change", (e) => {
     simulatedDay = e.target.value ? parseInt(e.target.value) : null;
     buildCalendar();
