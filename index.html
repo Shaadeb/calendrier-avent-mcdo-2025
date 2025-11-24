@@ -12,8 +12,9 @@
       --bg-bottom: #8a0017;
       --gold: #f5d264;
       --gold-dark: #d5ae3d;
-      --red: #b70015;
       --white: #ffffff;
+      --gift-color: rgba(255,255,255,0.18);
+      --gift-color-strong: rgba(255,220,140,0.25);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,11 +23,39 @@
       font-family: "Poppins", sans-serif;
       min-height: 100vh;
       background: radial-gradient(circle at top, var(--bg-top), var(--bg-bottom));
-      color: var(--white);
-      display: flex;
-      justify-content: center;
-      padding: 20px 12px 60px;
       overflow-x: hidden;
+      padding: 20px 12px 60px;
+      position: relative;
+      color: #fff;
+    }
+
+    /* ✨ Motifs cadeaux (fond léger premium) */
+    body::before,
+    body::after {
+      content: "🎁";
+      font-size: 48px;
+      position: fixed;
+      opacity: 0.18;
+      z-index: 2;
+      pointer-events: none;
+      animation: drift 18s linear infinite;
+    }
+    body::before {
+      top: 15%;
+      left: 5%;
+      color: var(--gift-color);
+    }
+    body::after {
+      bottom: 10%;
+      right: 8%;
+      color: var(--gift-color-strong);
+      animation-delay: 4s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0,0) rotate(0deg); }
+      50% { transform: translate(12px, -8px) rotate(10deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
     }
 
     /* ❄️ Neige */
@@ -37,7 +66,7 @@
       font-size: 1em;
       opacity: 0.8;
       animation: fall linear infinite;
-      z-index: 5;
+      z-index: 3;
       pointer-events: none;
     }
     @keyframes fall {
@@ -61,69 +90,72 @@
       gap: 6px;
       z-index: 1000;
     }
-
     .test-panel select {
       background: rgba(255,255,255,0.2);
       border: none;
-      padding: 2px 4px;
+      padding: 3px 5px;
       border-radius: 6px;
       color: #fff;
       font-size: 0.75rem;
       cursor: pointer;
     }
 
-    /* Structure */
     .page-wrapper {
       width: 100%;
       max-width: 950px;
       margin: auto;
       position: relative;
-      z-index: 10;
+      z-index: 5;
     }
 
-    .logo-wrap { display: flex; justify-content: center; margin-bottom: 10px; }
-    .logo { width: 70px; }
+    .logo-wrap { text-align: center; margin-bottom: 10px; }
+    .logo { width: 80px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
 
-    .hero { text-align: center; margin-bottom: 16px; }
+    .hero { text-align: center; margin-bottom: 22px; }
     .hero-title { font-size: 2.4rem; font-weight: 600; }
     .hero-title span { color: var(--gold); }
-    .hero-subtitle { font-size: 0.95rem; opacity: 0.9; line-height: 1.4; max-width: 600px; margin: auto; }
+    .hero-subtitle { opacity: 0.92; line-height: 1.4; font-size: 1rem; max-width: 600px; margin: auto; }
 
     .calendar-card {
-      background: rgba(255,255,255,0.06);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 28px;
-      border: 1px solid rgba(255,255,255,0.4);
-      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      padding: 24px 20px 22px;
       box-shadow: 0 0 40px rgba(245,210,100,0.3);
       animation: glow 4s ease-in-out infinite alternate;
+      backdrop-filter: blur(3px);
     }
     @keyframes glow {
       from { box-shadow: 0 0 40px rgba(245,210,100,0.2); }
-      to { box-shadow: 0 0 80px rgba(245,210,100,0.6); }
+      to   { box-shadow: 0 0 75px rgba(245,210,100,0.5); }
     }
+
+    .calendar-header { text-align: center; margin-bottom: 15px; }
+    .calendar-header h3 { font-size: 1.2rem; }
+    .calendar-header p { font-size: 0.85rem; opacity: 0.9; }
 
     .calendar-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px,1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(135px,1fr));
+      gap: 16px;
       margin-top: 12px;
     }
 
     .day {
       background: #fff;
-      border-radius: 16px;
-      border: 2px solid #fff;
-      padding: 10px;
+      border-radius: 18px;
+      padding: 12px;
       text-align: center;
       color: var(--gold-dark);
       cursor: pointer;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      transition: 0.15s;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.22);
+      transition: 0.2s;
+      position: relative;
+      min-height: 105px;
     }
+    .day:hover { transform: scale(1.06); }
 
-    .day:hover { transform: scale(1.05); }
-
-    .day--locked { opacity: 0.65; cursor: not-allowed; }
+    .day--locked { opacity: 0.6; cursor: not-allowed; }
     .day--locked::after {
       content: "🔒";
       position: absolute;
@@ -132,17 +164,17 @@
       font-size: 0.9rem;
     }
 
-    .day-number { font-size: 1.6rem; font-weight: 600; }
-    .day-label { font-size: 0.7rem; color: var(--red); }
+    .day-number { font-size: 1.7rem; font-weight: 600; }
+    .day-label { font-size: 0.75rem; color: #b70015; }
 
     .footer-note {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 0.7rem;
+      margin-top: 18px;
+      font-size: 0.75rem;
       opacity: 0.9;
+      text-align: center;
+      line-height: 1.4;
     }
 
-    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -157,84 +189,73 @@
 
     .modal {
       background: radial-gradient(circle at top, #c8102e, #8a0017);
-      border-radius: 22px;
-      padding: 20px;
+      border-radius: 24px;
+      padding: 22px;
       max-width: 480px;
       width: 100%;
       text-align: center;
-      color: white;
       position: relative;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 35px rgba(0,0,0,0.5);
     }
 
     .modal img {
       width: 100%;
       border-radius: 14px;
-      margin: 10px 0;
+      margin: 12px 0;
+      max-height: 70vh;
+      object-fit: contain;
     }
 
     .modal-close {
       position: absolute;
       top: 10px;
       right: 10px;
+      width: 30px;
+      height: 30px;
       background: rgba(0,0,0,0.4);
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
       border: 1px solid rgba(255,255,255,0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-size: 18px;
+      color: #fff;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+<!-- 🌨️ Génération de neige -->
 <script>
-  for (let i = 0; i < 35; i++) {
-    const s = document.createElement("div");
-    s.className = "snowflake";
-    s.textContent = "❄";
-    s.style.left = Math.random()*100 + "vw";
-    s.style.animationDuration = (4 + Math.random()*7) + "s";
-    s.style.fontSize = (10 + Math.random()*8) + "px";
-    s.style.opacity = 0.5 + Math.random()*0.5;
-    s.style.animationDelay = Math.random()*5 + "s";
+  for(let i=0;i<40;i++){
+    const s=document.createElement("div");
+    s.className="snowflake";
+    s.textContent="❄";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(4+Math.random()*7)+"s";
+    s.style.fontSize=(10+Math.random()*14)+"px";
+    s.style.opacity=0.5+Math.random()*0.5;
+    s.style.animationDelay=Math.random()*5+"s";
     document.body.appendChild(s);
   }
 </script>
 
-<!-- TEST PANEL -->
+<!-- 🧪 MODE TEST -->
 <div class="test-panel">
   Test :
   <select id="simulate-day">
     <option value="">Aujourd’hui</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option>
-    <option value="13">13</option>
-    <option value="14">14</option>
-    <option value="15">15</option>
-    <option value="16">16</option>
-    <option value="17">17</option>
-    <option value="18">18</option>
-    <option value="19">19</option>
-    <option value="20">20</option>
-    <option value="21">21</option>
-    <option value="22">22</option>
-    <option value="23">23</option>
-    <option value="24">24</option>
+    <option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+    <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+    <option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+    <option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
   </select>
 </div>
 
 <div class="page-wrapper">
-  <div class="logo-wrap">
-    <img class="logo" src="logo-mcdonalds.png" alt="">
-  </div>
+  <div class="logo-wrap"><img src="logo-mcdonalds.png" class="logo"></div>
 
   <header class="hero">
-    <h1 class="hero-title">Calendrier de l'Avent <span>2025</span></h1>
+    <h1 class="hero-title">Calendrier de l’Avent <span>2025</span></h1>
     <p class="hero-subtitle">
       16 jours de surprises spécialement imaginées pour vous régaler ✨<br>
       Chaque jour une offre unique… à découvrir dans votre case !
@@ -261,7 +282,7 @@
   <div class="modal">
     <button id="modal-close" class="modal-close">×</button>
     <h2 id="modal-title"></h2>
-    <img id="modal-image" src="" alt="">
+    <img id="modal-image">
     <p id="modal-text"></p>
   </div>
 </div>
@@ -272,100 +293,75 @@
   const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
 
   const IMAGES = {
-    9:"09_12 (15).png",
-    10:"09_12 (3).png",
-    11:"09_12 (4).png",
-    12:"09_12 (5).png",
-    13:"09_12 (6).png",
-    14:"09_12 (7).png",
-    15:"09_12 (8).png",
-    16:"09_12 (9).png",
-    17:"09_12 (10).png",
-    18:"09_12 (11).png",
-    19:"09_12 (12).png",
-    20:"09_12 (13).png",
-    21:"09_12 (14).png",
-    22:"09_12 (16).png",
-    23:"09_12.png",
-    24:"24_12.png",
-    locked:"09_12 (2).png",
-    expired:"offre-expiree.png"
+    9:"09_12 (15).png", 10:"09_12 (3).png", 11:"09_12 (4).png", 12:"09_12 (5).png",
+    13:"09_12 (6).png", 14:"09_12 (7).png", 15:"09_12 (8).png", 16:"09_12 (9).png",
+    17:"09_12 (10).png",18:"09_12 (11).png",19:"09_12 (12).png",20:"09_12 (13).png",
+    21:"09_12 (14).png",22:"09_12 (16).png",23:"09_12.png",24:"24_12.png",
+    locked:"09_12 (2).png", expired:"offre-expiree.png"
   };
 
   let simulatedDay = null;
 
-  function getBaseDate() {
+  function getBaseDate(){
     return simulatedDay ? new Date(CALENDAR_YEAR,11,simulatedDay) : new Date();
   }
 
-  function getDayStatus(day) {
-    const base = getBaseDate(); base.setHours(0,0,0,0);
-
-    const openDate = new Date(CALENDAR_YEAR,11,day); openDate.setHours(0,0,0,0);
-
-    if (base < openDate) return "locked";
-    if (base.getTime() === openDate.getTime()) return "current";
+  function getDayStatus(day){
+    const base=getBaseDate(); base.setHours(0,0,0,0);
+    const open=new Date(CALENDAR_YEAR,11,day); open.setHours(0,0,0,0);
+    if(base<open) return "locked";
+    if(base.getTime()===open.getTime()) return "current";
     return "expired";
   }
 
-  function buildCalendar() {
-    const grid = document.getElementById("calendar-grid");
-    grid.innerHTML = "";
+  function buildCalendar(){
+    const g=document.getElementById("calendar-grid"); g.innerHTML="";
+    ORDER.forEach(day=>{
+      const st=getDayStatus(day);
+      const div=document.createElement("button");
+      div.className="day";
+      if(st==="locked") div.classList.add("day--locked");
+      if(st==="expired") div.classList.add("day--expired");
 
-    ORDER.forEach(day => {
-      const status = getDayStatus(day);
+      const label = st==="locked" ? "Bientôt" : st==="expired" ? "Expirée" : "Disponible";
 
-      const div = document.createElement("button");
-      div.className = "day";
-      if (status==="locked") div.classList.add("day--locked");
-      if (status==="expired") div.classList.add("day--expired");
+      div.innerHTML=`<div class="day-number">${day}</div>
+                     <div class="day-label">${label}</div>`;
 
-      const label = status==="locked" ? "Bientôt" :
-                    status==="expired" ? "Expirée" : "Disponible";
-
-      div.innerHTML = `
-        <div class="day-number">${day}</div>
-        <div class="day-label">${label}</div>
-      `;
-
-      div.addEventListener("click", ()=>openModal(day));
-      grid.appendChild(div);
+      div.onclick=()=>openModal(day);
+      g.appendChild(div);
     });
   }
 
   function formatDateFr(day){
-    const d=new Date(CALENDAR_YEAR,11,day);
-    return d.toLocaleDateString("fr-FR", {day:"numeric",month:"long"});
+    return new Date(CALENDAR_YEAR,11,day)
+      .toLocaleDateString("fr-FR",{day:"numeric",month:"long"});
   }
 
-  function openModal(day) {
+  function openModal(day){
+    const st=getDayStatus(day);
     const modal=document.getElementById("offer-modal-backdrop");
-    const title=document.getElementById("modal-title");
+    const t=document.getElementById("modal-title");
     const img=document.getElementById("modal-image");
-    const text=document.getElementById("modal-text");
-    const status=getDayStatus(day);
+    const txt=document.getElementById("modal-text");
 
-    if (status==="locked") {
-      title.textContent="Rien à voir ici… pour le moment 🎁";
+    if(st==="locked"){
+      t.textContent="Rien à voir ici… pour le moment 🎁";
       img.src=IMAGES.locked;
-      text.innerHTML="Cette case s’ouvrira le "+formatDateFr(day)+".";
+      txt.innerHTML="Cette case s’ouvrira le "+formatDateFr(day)+".";
     }
-
-    else if (status==="current") {
-      title.textContent="Offre du "+day+" décembre";
+    else if(st==="current"){
+      t.textContent="Offre du "+day+" décembre";
       img.src=IMAGES[day];
-
-      text.innerHTML=`
+      txt.innerHTML=`
         <strong>Disponible via l’onglet “Avantages” en borne, au comptoir, au McDrive™ ou sur l’application McDo+.</strong><br>
         Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
       `;
     }
-
-    else {
-      title.textContent="Offre expirée";
+    else{
+      t.textContent="Offre expirée";
       img.src=IMAGES.expired;
-
-      text.innerHTML=`
+      txt.innerHTML=`
         Cette offre était valable le ${formatDateFr(day)}.<br>
         <strong>Disponible via l’onglet “Avantages” en borne, au comptoir, au McDrive™ ou sur l’application McDo+.</strong>
       `;
@@ -374,20 +370,19 @@
     modal.classList.add("active");
   }
 
-  document.getElementById("modal-close").addEventListener("click",()=>{
+  document.getElementById("modal-close").onclick=()=>{
     document.getElementById("offer-modal-backdrop").classList.remove("active");
-  });
-
-  document.getElementById("offer-modal-backdrop").addEventListener("click",e=>{
+  };
+  document.getElementById("offer-modal-backdrop").onclick=e=>{
     if(e.target.id==="offer-modal-backdrop") e.target.classList.remove("active");
-  });
+  };
 
-  document.getElementById("simulate-day").addEventListener("change", e=>{
-    simulatedDay = e.target.value ? parseInt(e.target.value) : null;
+  document.getElementById("simulate-day").onchange=e=>{
+    simulatedDay=e.target.value ? parseInt(e.target.value) : null;
     buildCalendar();
-  });
+  };
 
-  window.addEventListener("DOMContentLoaded", buildCalendar);
+  buildCalendar();
 </script>
 
 </body>
