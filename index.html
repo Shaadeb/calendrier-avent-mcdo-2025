@@ -2,287 +2,233 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<title>Calendrier de l'Avent 2025</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calendrier de l'Avent 2025 — TEST</title>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: radial-gradient(circle at top, #c8102e, #8a0017);
-        position: relative;
-        color: white;
-        text-align: center;
-        overflow-x: hidden;
-    }
+/* ------------------- RESET -------------------- */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
 
-    /* Fond décor : cadeaux blancs/or très discrets */
-    body::before,
-    body::after {
-        content: "🎁";
-        position: fixed;
-        font-size: 55px;
-        opacity: 0.14;
-        z-index: 1;
-        pointer-events: none;
-        animation: drift 18s ease-in-out infinite;
-    }
-    body::before { top: 12%; left: 6%; }
-    body::after  { bottom: 10%; right: 10%; animation-delay: 4s; }
+/* ------------------- FOND --------------------- */
+body {
+    background: url("calendrier-fond.png") no-repeat top center;
+    background-size: cover;
+    min-height: 100vh;
+    text-align: center;
+    color: white;
+}
 
-    @keyframes drift {
-        0% { transform: translate(0,0) rotate(0deg); }
-        50% { transform: translate(15px,-10px) rotate(10deg); }
-        100% { transform: translate(0,0) rotate(0deg); }
-    }
+/* ------------------- MODE TEST --------------------- */
+#testBar {
+    background: #d60000;
+    padding: 10px;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    display: none;
+}
+#testControls {
+    margin-top: 8px;
+}
+button {
+    background: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-    /* Neige */
-    .snowflake {
-        position: fixed;
-        top: -10px;
-        color: white;
-        opacity: 0.8;
-        font-size: 16px;
-        animation: fall linear infinite;
-        z-index: 2;
-        pointer-events: none;
-    }
-    @keyframes fall {
-        0% { transform: translateY(-10px); }
-        100% { transform: translateY(110vh); }
-    }
+/* ------------------- GRILLE --------------------- */
+.grid {
+    width: 90%;
+    max-width: 900px;
+    margin: 180px auto 60px auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
 
-    h1 {
-        margin-top: 25px;
-        font-size: 34px;
-        font-weight: 900;
-        text-shadow: 0 0 10px #000;
-    }
+.case {
+    background: rgba(255,255,255,0);
+    cursor: pointer;
+}
 
-    .test-mode {
-        background: rgba(255,255,255,0.15);
-        padding: 12px;
-        border-radius: 12px;
-        display: inline-block;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        font-size: 15px;
-        z-index: 20;
-        position: relative;
-    }
+/* ------------------- POPUP --------------------- */
+#popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+.popup-content {
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+}
+.popup-content img {
+    width: 100%;
+}
+.close-btn {
+    background: #d60000;
+    color: white;
+    margin-top: 10px;
+}
 
-    .test-input {
-        padding: 5px;
-        border-radius: 6px;
-        border: none;
-        width: 135px;
-        margin-top: 6px;
-    }
-
-    .calendar {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        width: 90%;
-        max-width: 900px;
-        margin: auto;
-        z-index: 10;
-        position: relative;
-    }
-
-    .case {
-        background: white;
-        color: #c19700;
-        font-size: 32px;
-        padding: 26px 0;
-        border-radius: 18px;
-        font-weight: 900;
-        cursor: pointer;
-        box-shadow: 0 0 15px rgba(0,0,0,0.35);
-        transition: 0.15s;
-    }
-    .case:hover { transform: scale(1.06); }
-
-    .case.locked {
-        background: rgba(255,255,255,0.35);
-        color: rgba(255,255,255,0.55);
-        cursor: not-allowed;
-    }
-
-    .case.expired { opacity: 0.55; }
-
-    /* Pop-up */
-    .popup-bg {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.65);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .popup {
-        background: white;
-        border-radius: 18px;
-        padding: 20px;
-        width: 90%;
-        max-width: 420px;
-        text-align: center;
-        position: relative;
-        box-shadow: 0 0 25px rgba(0,0,0,0.5);
-    }
-
-    .popup img {
-        width: 100%;
-        border-radius: 14px;
-        margin-bottom: 15px;
-    }
-
-    .close-btn {
-        position: absolute;
-        top: 8px;
-        right: 12px;
-        font-size: 25px;
-        cursor: pointer;
-        font-weight: 900;
-        color: black;
-    }
-
-    .mentions {
-        font-size: 13px;
-        color: #333;
-        margin-top: 8px;
-    }
-
+/* ------------------- FOOTER --------------------- */
+footer {
+    margin-top: 30px;
+    font-size: 12px;
+    padding-bottom: 40px;
+}
 </style>
 </head>
+
 <body>
 
-<!-- neige -->
-<script>
-for(let i=0;i<35;i++){
-    const s=document.createElement("div");
-    s.className="snowflake";
-    s.textContent="❄";
-    s.style.left=Math.random()*100+"vw";
-    s.style.animationDuration=(4+Math.random()*6)+"s";
-    s.style.fontSize=(12+Math.random()*10)+"px";
-    s.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(s);
-}
-</script>
-
-<h1>Calendrier de l’Avent 2025 — TEST</h1>
-
-<div class="test-mode">
-    <b>Mode test :</b><br>
-    <input id="test-date" class="test-input" type="date">
-</div>
-
-<div class="calendar" id="calendar"></div>
-
-<!-- POPUP -->
-<div class="popup-bg" id="popup-bg">
-    <div class="popup">
-        <div class="close-btn" onclick="closePopup()">×</div>
-        <img id="popup-image">
-        <div class="mentions" id="popup-text"></div>
+<!-- MODE TEST -->
+<div id="testBar">
+    MODE TEST — Date simulée : <span id="simDate">9</span> décembre
+    <div id="testControls">
+        <button onclick="prevDay()">◀</button>
+        <button onclick="nextDay()">▶</button>
+        <button onclick="disableTest()">Désactiver test</button>
     </div>
 </div>
 
+<button onclick="enableTest()" style="position:fixed;top:10px;right:10px;z-index:999;">Activer mode test</button>
+
+<!-- ------------------- GRILLE ------------------- -->
+<div class="grid">
+
+    <!-- IMPORTANT : ordre EXACT comme ton image -->
+    <img class="case" data-day="10" src="case10.png">
+    <img class="case" data-day="22" src="case22.png">
+    <img class="case" data-day="18" src="case18.png">
+    <img class="case" data-day="15" src="case15.png">
+
+    <img class="case" data-day="17" src="case17.png">
+    <img class="case" data-day="14" src="case14.png">
+    <img class="case" data-day="21" src="case21.png">
+    <img class="case" data-day="20" src="case20.png">
+
+    <img class="case" data-day="12" src="case12.png">
+    <img class="case" data-day="19" src="case19.png">
+    <img class="case" data-day="23" src="case23.png">
+    <img class="case" data-day="16" src="case16.png">
+
+    <img class="case" data-day="11" src="case11.png">
+    <img class="case" data-day="9"  src="case9.png">
+    <img class="case" data-day="13" src="case13.png">
+    <img class="case" data-day="24" src="case24.png">
+
+</div>
+
+<!-- POPUP -->
+<div id="popup">
+    <div class="popup-content">
+        <img id="popupImg" src="">
+        <p id="popupLegal"></p>
+        <button class="close-btn" onclick="closePopup()">Fermer</button>
+    </div>
+</div>
+
+<footer>
+    Offres valables dans les restaurants d’Amiens Centre-ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025
+</footer>
+
 <script>
-/* mapping images EXACT selon la règle Shade */
-const IMAGES = {
+/* ---------------- LOGIQUE DATES ---------------- */
+const today = new Date();
+let testMode = false;
+let testDay = 9;
+
+/* ---------------- OFFRES ---------------- */
+const OFFERS = {
     9:  "09_12.png",
     10: "09_12 (3).png",
-    11: "09_12 (4).png",
-    12: "09_12 (5).png",
-    13: "09_12 (6).png",
-    14: "09_12 (7).png",
-    15: "09_12 (8).png",
+    11: "09_12 (8).png",
+    12: "09_12 (14).png",
+    13: "09_12 (11).png",
+    14: "09_12 (4).png",
+    15: "09_12 (7).png",
     16: "09_12 (9).png",
-    17: "09_12 (10).png",
-    18: "09_12 (11).png",
-    19: "09_12 (12).png",
-    20: "09_12 (13).png",
-    21: "09_12 (14).png",
-    22: "09_12 (15).png",
+    17: "09_12 (5).png",
+    18: "09_12 (6).png",
+    19: "09_12 (15).png",
+    20: "09_12 (10).png",
+    21: "09_12 (12).png",
+    22: "09_12 (3).png",
     23: "09_12 (16).png",
     24: "24_12.png"
 };
 
-const LOCKED_IMG = "09_12 (2).png";
-
-const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
-
-function today(){
-    const t=document.getElementById("test-date").value;
-    return t? new Date(t) : new Date();
+function getCurrentDay() {
+    return testMode ? testDay : today.getDate();
 }
 
-function getStatus(day,now){
-    const d=new Date(2025,11,day);
-    d.setHours(0,0,0,0);
-    now.setHours(0,0,0,0);
-    if(now<d) return "locked";
-    if(now>d) return "expired";
-    return "current";
-}
-
-function buildCalendar(){
-    const cal=document.getElementById("calendar");
-    cal.innerHTML="";
-    const now=today();
-
-    ORDER.forEach(day=>{
-        const div=document.createElement("div");
-        div.className="case";
-        div.textContent=day;
-
-        const status=getStatus(day,now);
-        if(status==="locked") div.classList.add("locked");
-        if(status==="expired") div.classList.add("expired");
-
-        div.onclick=()=>openCase(day,status,now);
-        cal.appendChild(div);
-    });
-}
-
-function openCase(day,status,now){
-    const popup=document.getElementById("popup-bg");
-    const img=document.getElementById("popup-image");
-    const txt=document.getElementById("popup-text");
-
-    if(status==="locked"){
-        img.src=LOCKED_IMG;
-        txt.innerHTML="Cette case s’ouvre le "+day+" décembre 🎄";
+/* ---------------- MENTIONS ---------------- */
+function legal(day) {
+    if (day == 16 || day == 24) {
+        return "Offre valable sur présentation de cette case au comptoir.";
     }
-    else if(status==="current"){
-        img.src=IMAGES[day];
-
-        if(day===16 || day===24){
-            txt.innerHTML="Offre valable sur présentation de cette case au comptoir.";
-        } else {
-            txt.innerHTML='Disponible via l’onglet "Avantages" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.';
-        }
-    }
-    else{
-        img.src="offre-expiree.png";
-        txt.innerHTML="Offre expirée.";
-    }
-
-    popup.style.display="flex";
+    return "Disponible via l’onglet \"Avantages\" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.";
 }
 
-function closePopup(){
-    document.getElementById("popup-bg").style.display="none";
+/* ---------------- POPUP ---------------- */
+function openPopup(day) {
+    const now = getCurrentDay();
+
+    let img = "";
+    if (now < day) img = "09_12 (2).png";
+    else if (now > day) img = "offre-expiree.png";
+    else img = OFFERS[day];
+
+    document.getElementById("popupImg").src = img;
+    document.getElementById("popupLegal").innerText = legal(day);
+
+    document.getElementById("popup").style.display = "flex";
+}
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
 }
 
-document.getElementById("test-date").addEventListener("change", buildCalendar);
+/* ---------------- CLICS CASES ---------------- */
+document.querySelectorAll(".case").forEach(c => {
+    c.onclick = () => openPopup(parseInt(c.dataset.day));
+});
 
-buildCalendar();
+/* ---------------- MODE TEST ---------------- */
+function enableTest() {
+    testMode = true;
+    document.getElementById("testBar").style.display = "block";
+}
+function disableTest() {
+    testMode = false;
+    document.getElementById("testBar").style.display = "none";
+}
+function nextDay() {
+    if (testDay < 24) testDay++;
+    document.getElementById("simDate").innerText = testDay;
+}
+function prevDay() {
+    if (testDay > 9) testDay--;
+    document.getElementById("simDate").innerText = testDay;
+}
 </script>
 
 </body>
