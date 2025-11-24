@@ -30,6 +30,7 @@
       overflow-x: hidden;
     }
 
+    /* ❄️ Neige */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -45,6 +46,7 @@
       100% { transform: translateY(110vh) translateX(20px); }
     }
 
+    /* Mode test visible */
     .test-panel {
       position: fixed;
       top: 10px;
@@ -67,7 +69,7 @@
       color: #fff;
       padding: 2px 4px;
       border-radius: 6px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       cursor: pointer;
     }
 
@@ -134,7 +136,7 @@
 
     .day--open:hover {
       transform: scale(1.05);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 12px 26px rgba(0,0,0,0.4);
     }
     .day--locked { opacity: 0.7; cursor: not-allowed; }
     .day--locked::after { content: "🔒"; position: absolute; top: 8px; right: 8px; font-size: 0.9rem; }
@@ -149,6 +151,7 @@
       line-height: 1.4;
     }
 
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -204,6 +207,7 @@
 <body>
 
 <script>
+  // Neige
   for (let i = 0; i < 35; i++) {
     const s = document.createElement("div");
     s.classList.add("snowflake");
@@ -217,6 +221,7 @@
   }
 </script>
 
+<!-- Mode test visible -->
 <div class="test-panel">
   Test :
   <select id="simulate-day">
@@ -268,6 +273,7 @@
   </section>
 </div>
 
+<!-- Pop-up -->
 <div class="modal-backdrop" id="offer-modal-backdrop">
   <div class="modal">
     <button class="modal-close" id="modal-close">×</button>
@@ -279,6 +285,7 @@
 
 <script>
   const CALENDAR_YEAR = 2025;
+
   const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
 
   const IMAGES = {
@@ -368,30 +375,19 @@
       title.textContent = "Offre du " + day + " décembre";
       img.src = IMAGES[day];
 
-      if (day === 16 || day === 24) {
-        text.innerHTML = `
-          <strong>Offre valable sur présentation de cette case au comptoir.</strong><br>
-          Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
-        `;
-      } else {
-        text.innerHTML = `
-          <strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong><br>
-          Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
-        `;
-      }
+      text.innerHTML = `
+        <strong>Disponible via l’onglet Avantages en borne, au comptoir, au drive ou sur l’application McDo+.</strong><br>
+        Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
+      `;
     }
 
     else {
       title.textContent = "Offre expirée";
       img.src = IMAGES.expired;
 
-      let rule = (day === 16 || day === 24)
-        ? "<strong>Offre valable sur présentation de cette case au comptoir.</strong>"
-        : "<strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong>";
-
       text.innerHTML = `
         Cette offre était valable le ${formatDateFr(day)}.<br>
-        ${rule}
+        <strong>Disponible via l’onglet Avantages en borne, au comptoir, au drive ou sur l’application McDo+.</strong>
       `;
     }
 
