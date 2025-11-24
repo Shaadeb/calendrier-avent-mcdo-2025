@@ -10,220 +10,274 @@
         margin: 0;
         padding: 0;
         font-family: Arial, sans-serif;
-        background: #a80000;
-        background-image:
-            radial-gradient(circle at top center, rgba(255,215,0,0.35), transparent 70%),
-            url('cadeaux-fond.png');
-        background-size: cover;
-        background-attachment: fixed;
+        background: radial-gradient(circle at top, #c8102e, #8a0017);
+        position: relative;
         color: white;
         text-align: center;
+        overflow-x: hidden;
+    }
+
+    /* Fond décor : cadeaux blancs/or très discrets */
+    body::before,
+    body::after {
+        content: "🎁";
+        position: fixed;
+        font-size: 55px;
+        opacity: 0.14;
+        z-index: 1;
+        pointer-events: none;
+        animation: drift 18s ease-in-out infinite;
+    }
+    body::before { top: 12%; left: 6%; }
+    body::after  { bottom: 10%; right: 10%; animation-delay: 4s; }
+
+    @keyframes drift {
+        0% { transform: translate(0,0) rotate(0deg); }
+        50% { transform: translate(15px,-10px) rotate(10deg); }
+        100% { transform: translate(0,0) rotate(0deg); }
+    }
+
+    /* Neige */
+    .snowflake {
+        position: fixed;
+        top: -10px;
+        color: white;
+        opacity: 0.8;
+        font-size: 16px;
+        animation: fall linear infinite;
+        z-index: 2;
+        pointer-events: none;
+    }
+    @keyframes fall {
+        0% { transform: translateY(-10px); }
+        100% { transform: translateY(110vh); }
     }
 
     h1 {
-        margin-top: 30px;
-        font-size: 35px;
-        text-shadow: 0 0 8px #000;
+        margin-top: 25px;
+        font-size: 34px;
         font-weight: 900;
+        text-shadow: 0 0 10px #000;
     }
 
     .test-mode {
         background: rgba(255,255,255,0.15);
         padding: 12px;
+        border-radius: 12px;
         display: inline-block;
-        border-radius: 10px;
-        margin-bottom: 25px;
-        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 15px;
+        z-index: 20;
+        position: relative;
     }
 
     .test-input {
-        margin-top: 8px;
         padding: 5px;
         border-radius: 6px;
         border: none;
-        width: 90px;
-        text-align: center;
+        width: 135px;
+        margin-top: 6px;
     }
 
     .calendar {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        padding: 20px;
+        gap: 14px;
         width: 90%;
         max-width: 900px;
         margin: auto;
-    }
-
-    .case {
-        background: rgba(255,255,255,0.95);
-        color: #c19700;
-        font-size: 32px;
-        border-radius: 15px;
-        padding: 25px 0;
-        cursor: pointer;
-        font-weight: 900;
-        box-shadow: 0 0 10px rgba(0,0,0,0.35);
+        z-index: 10;
         position: relative;
     }
 
+    .case {
+        background: white;
+        color: #c19700;
+        font-size: 32px;
+        padding: 26px 0;
+        border-radius: 18px;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(0,0,0,0.35);
+        transition: 0.15s;
+    }
+    .case:hover { transform: scale(1.06); }
+
     .case.locked {
-        background: rgba(255,255,255,0.3);
-        color: rgba(255,255,255,0.4);
+        background: rgba(255,255,255,0.35);
+        color: rgba(255,255,255,0.55);
         cursor: not-allowed;
     }
 
-    .case.expired {
-        opacity: 0.55;
-    }
+    .case.expired { opacity: 0.55; }
 
-    /* POPUP */
+    /* Pop-up */
     .popup-bg {
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0,0,0,0.65);
         display: none;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        z-index: 1000;
     }
 
     .popup {
         background: white;
+        border-radius: 18px;
         padding: 20px;
-        border-radius: 20px;
-        max-width: 420px;
         width: 90%;
+        max-width: 420px;
         text-align: center;
         position: relative;
+        box-shadow: 0 0 25px rgba(0,0,0,0.5);
     }
 
     .popup img {
         width: 100%;
-        border-radius: 15px;
+        border-radius: 14px;
+        margin-bottom: 15px;
     }
 
     .close-btn {
         position: absolute;
-        top: 10px;
+        top: 8px;
         right: 12px;
-        font-size: 22px;
+        font-size: 25px;
         cursor: pointer;
-        color: #000;
-        font-weight: bold;
+        font-weight: 900;
+        color: black;
     }
 
     .mentions {
-        margin-top: 12px;
-        font-size: 12px;
+        font-size: 13px;
         color: #333;
-        text-align: center;
+        margin-top: 8px;
     }
+
 </style>
 </head>
 <body>
 
-<h1>🎁 Calendrier de l'Avent 2025 — TEST 🎁</h1>
+<!-- neige -->
+<script>
+for(let i=0;i<35;i++){
+    const s=document.createElement("div");
+    s.className="snowflake";
+    s.textContent="❄";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(4+Math.random()*6)+"s";
+    s.style.fontSize=(12+Math.random()*10)+"px";
+    s.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(s);
+}
+</script>
+
+<h1>Calendrier de l’Avent 2025 — TEST</h1>
 
 <div class="test-mode">
-    <b>Mode test :</b> simule une date  
-    <br>
-    <input class="test-input" type="date" id="test-date">
+    <b>Mode test :</b><br>
+    <input id="test-date" class="test-input" type="date">
 </div>
 
 <div class="calendar" id="calendar"></div>
 
+<!-- POPUP -->
 <div class="popup-bg" id="popup-bg">
     <div class="popup">
         <div class="close-btn" onclick="closePopup()">×</div>
-        <img id="popup-image" src="">
-        <div class="mentions" id="mentions"></div>
+        <img id="popup-image">
+        <div class="mentions" id="popup-text"></div>
     </div>
 </div>
 
 <script>
-/* --- DATES --- */
-const DAYS = [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
-
-function today() {
-    const t = document.getElementById("test-date").value;
-    return t ? new Date(t) : new Date();
-}
-
-function dateFor(day) {
-    return new Date(2025, 11, day);
-}
-
-/* --- IMAGE MAPPING CORRIGÉ — basé sur TES visuels exacts --- */
-
+/* mapping images EXACT selon la règle Shade */
 const IMAGES = {
-    9:  "09_12 (14).png",
+    9:  "09_12.png",
     10: "09_12 (3).png",
-    11: "09_12 (11).png",
-    12: "09_12 (4).png",
-    13: "09_12 (5).png",
-    14: "09_12 (6).png",
-    15: "09_12 (15).png",
+    11: "09_12 (4).png",
+    12: "09_12 (5).png",
+    13: "09_12 (6).png",
+    14: "09_12 (7).png",
+    15: "09_12 (8).png",
     16: "09_12 (9).png",
-    17: "09_12 (8).png",
-    18: "09_12 (12).png",
-    19: "09_12 (10).png",
-    20: "09_12 (7).png",
-    21: "09_12 (13).png",
-    22: "09_12.png",
+    17: "09_12 (10).png",
+    18: "09_12 (11).png",
+    19: "09_12 (12).png",
+    20: "09_12 (13).png",
+    21: "09_12 (14).png",
+    22: "09_12 (15).png",
     23: "09_12 (16).png",
     24: "24_12.png"
 };
 
-/* --- MENTIONS --- */
-function mentionsFor(day) {
-    if (day === 16 || day === 24) {
-        return "Offre valable sur présentation de cette case au comptoir.";
-    }
-    return 'Disponible via l’onglet "Avantages" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.';
+const LOCKED_IMG = "09_12 (2).png";
+
+const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
+
+function today(){
+    const t=document.getElementById("test-date").value;
+    return t? new Date(t) : new Date();
 }
 
-/* --- AFFICHAGE --- */
-function buildCalendar() {
-    const cal = document.getElementById("calendar");
-    cal.innerHTML = "";
+function getStatus(day,now){
+    const d=new Date(2025,11,day);
+    d.setHours(0,0,0,0);
+    now.setHours(0,0,0,0);
+    if(now<d) return "locked";
+    if(now>d) return "expired";
+    return "current";
+}
 
-    const now = today();
+function buildCalendar(){
+    const cal=document.getElementById("calendar");
+    cal.innerHTML="";
+    const now=today();
 
-    ORDER.forEach(day => {
-        const div = document.createElement("div");
-        div.className = "case";
-        div.innerText = day;
+    ORDER.forEach(day=>{
+        const div=document.createElement("div");
+        div.className="case";
+        div.textContent=day;
 
-        const d = dateFor(day);
+        const status=getStatus(day,now);
+        if(status==="locked") div.classList.add("locked");
+        if(status==="expired") div.classList.add("expired");
 
-        if (now < d) div.classList.add("locked");
-        else if (now > d) div.classList.add("expired");
-
-        div.onclick = () => openCase(day, now);
+        div.onclick=()=>openCase(day,status,now);
         cal.appendChild(div);
     });
 }
 
-function openCase(day, now) {
-    const d = dateFor(day);
+function openCase(day,status,now){
+    const popup=document.getElementById("popup-bg");
+    const img=document.getElementById("popup-image");
+    const txt=document.getElementById("popup-text");
 
-    if (now < d) {
-        alert("Trop tôt ! Cette case s'ouvrira le " + day + " décembre 🎄");
-        return;
+    if(status==="locked"){
+        img.src=LOCKED_IMG;
+        txt.innerHTML="Cette case s’ouvre le "+day+" décembre 🎄";
+    }
+    else if(status==="current"){
+        img.src=IMAGES[day];
+
+        if(day===16 || day===24){
+            txt.innerHTML="Offre valable sur présentation de cette case au comptoir.";
+        } else {
+            txt.innerHTML='Disponible via l’onglet "Avantages" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.';
+        }
+    }
+    else{
+        img.src="offre-expiree.png";
+        txt.innerHTML="Offre expirée.";
     }
 
-    const img = IMAGES[day];
-    document.getElementById("popup-image").src = img;
-
-    document.getElementById("mentions").innerText = 
-        now > d ? "🎄 Offre expirée depuis le " + day + " décembre." : mentionsFor(day);
-
-    document.getElementById("popup-bg").style.display = "flex";
+    popup.style.display="flex";
 }
 
-function closePopup() {
-    document.getElementById("popup-bg").style.display = "none";
+function closePopup(){
+    document.getElementById("popup-bg").style.display="none";
 }
 
 document.getElementById("test-date").addEventListener("change", buildCalendar);
