@@ -1,139 +1,124 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Calendrier de l'Avent</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calendrier de l'Avent 2025</title>
 
 <style>
     body {
         margin: 0;
-        padding: 0;
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        background: #b01618 url('logo-mcdonalds.png') no-repeat -9999px; /* hack pour Chrome */
+        font-family: Arial, sans-serif;
+        text-align: center;
+        color: white;
         overflow-x: hidden;
     }
 
-    /* fond neige rouge */
+    /* --- FOND FLOCONS (TON DESIGN) --- */
     body::before {
         content: "";
         position: fixed;
         inset: 0;
-        background: url('https://i.imgur.com/4fF3YYC.png');
-        background-size: cover;
+        background: url('fond.png') center/cover no-repeat;
         z-index: -1;
-        opacity: 1;
     }
 
     h1 {
-        text-align: center;
-        color: white;
-        font-size: 2.4rem;
-        margin-top: 40px;
-        font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    h2 {
-        text-align: center;
-        color: #f7d77e;
-        margin-top: -10px;
-        font-size: 1.2rem;
+        margin-top: 30px;
+        font-size: 32px;
         font-weight: bold;
     }
 
+    h2 {
+        margin-top: -10px;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    /* Conteneur du calendrier */
     .calendar {
-        max-width: 900px;
-        margin: 40px auto;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-        padding: 0 20px;
+        gap: 15px;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 20px;
     }
 
+    /* Cases du calendrier */
     .day {
-        background: white;
-        border-radius: 18px;
-        text-align: center;
-        padding: 25px 0;
-        font-size: 2.3rem;
-        font-weight: 700;
-        color: #d4af37;
+        background: rgba(255, 255, 255, 0.95);
+        color: #b38b00;
+        font-size: 40px;
+        font-weight: bold;
+        padding: 20px 0;
+        border-radius: 20px;
         cursor: pointer;
-        position: relative;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        user-select: none;
+        transition: transform 0.2s;
     }
 
-    .day.locked {
-        background: #ffffffcc;
-        filter: grayscale(1);
-        cursor: not-allowed;
+    .day:hover {
+        transform: scale(1.05);
     }
 
-    .day.special24 {
-        background: #d4af37;
+    /* Case du 24 (dorée) */
+    .special {
+        background: #d9b24a;
         color: white;
     }
 
-    /* pop-up */
-    .popup-overlay {
+    /* Pop-up */
+    .popup-bg {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(0,0,0,0.7);
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 10;
     }
 
     .popup {
         background: white;
-        padding: 0;
-        border-radius: 16px;
-        max-width: 380px;
-        width: 90%;
-        position: relative;
-        overflow: hidden;
+        border-radius: 20px;
+        padding: 10px;
+        max-width: 90%;
+        width: 350px;
     }
 
     .popup img {
         width: 100%;
-        display: block;
+        border-radius: 15px;
     }
 
-    .close-popup {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background: black;
-        color: white;
-        border: none;
-        font-size: 16px;
+    .close-btn {
+        margin-top: 10px;
+        background: #d9b24a;
+        padding: 10px 20px;
+        border-radius: 10px;
         cursor: pointer;
-        padding: 5px 10px;
-        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        display: inline-block;
     }
 
-    /* Mode test */
-    .test-bar {
+      /* Mentions légales */  
+    .mentions {
+        margin-top: 20px;
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    /* TEST MODE */
+    #testBox {
         position: fixed;
         top: 10px;
         right: 10px;
+        z-index: 20;
         background: white;
-        padding: 10px 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-        z-index: 9000;
-        font-size: 14px;
-    }
-
-    footer {
-        text-align: center;
-        margin: 40px 0;
-        color: white;
-        font-size: 0.9rem;
-        opacity: 0.8;
+        color: black;
+        padding: 10px;
+        border-radius: 10px;
     }
 
 </style>
@@ -141,35 +126,36 @@
 
 <body>
 
-<!-- Bouton TEST -->
-<div class="test-bar">
-    Mode test : 
-    <select id="testDate">
-        <option value="">-- Désactivé --</option>
-        <option value="2025-12-09">9 déc</option>
-        <option value="2025-12-10">10 déc</option>
-        <option value="2025-12-11">11 déc</option>
-        <option value="2025-12-12">12 déc</option>
-        <option value="2025-12-13">13 déc</option>
-        <option value="2025-12-14">14 déc</option>
-        <option value="2025-12-15">15 déc</option>
-        <option value="2025-12-16">16 déc</option>
-        <option value="2025-12-17">17 déc</option>
-        <option value="2025-12-18">18 déc</option>
-        <option value="2025-12-19">19 déc</option>
-        <option value="2025-12-20">20 déc</option>
-        <option value="2025-12-21">21 déc</option>
-        <option value="2025-12-22">22 déc</option>
-        <option value="2025-12-23">23 déc</option>
-        <option value="2025-12-24">24 déc</option>
+<h1>Calendrier de l'Avent 2025</h1>
+<h2>Découvrez des offres exclusives chaque jour !</h2>
+
+<!-- MODE TEST -->
+<div id="testBox">
+    Mode test :
+    <select id="testSelect">
+        <option value="0">— Désactivé —</option>
+        <option value="9">9 décembre</option>
+        <option value="10">10 décembre</option>
+        <option value="11">11 décembre</option>
+        <option value="12">12 décembre</option>
+        <option value="13">13 décembre</option>
+        <option value="14">14 décembre</option>
+        <option value="15">15 décembre</option>
+        <option value="16">16 décembre</option>
+        <option value="17">17 décembre</option>
+        <option value="18">18 décembre</option>
+        <option value="19">19 décembre</option>
+        <option value="20">20 décembre</option>
+        <option value="21">21 décembre</option>
+        <option value="22">22 décembre</option>
+        <option value="23">23 décembre</option>
+        <option value="24">24 décembre</option>
     </select>
 </div>
 
-<h1>Calendrier de l'Avent</h1>
-<h2>Découvrez des offres exclusives chaque jour !</h2>
-
-<!-- Disposition EXACTE de ton visuel -->
+<!-- CALENDRIER -->
 <div class="calendar">
+
     <div class="day" data-day="10">10</div>
     <div class="day" data-day="22">22</div>
     <div class="day" data-day="18">18</div>
@@ -188,23 +174,26 @@
     <div class="day" data-day="11">11</div>
     <div class="day" data-day="9">9</div>
     <div class="day" data-day="13">13</div>
-    <div class="day special24" data-day="24">24</div>
+    <div class="day special" data-day="24">24</div>
+
 </div>
 
-<footer>
-    Offres valables dans les restaurants d’Amiens Centre-Ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025  
-</footer>
+<div class="mentions">
+    Offres valables dans les restaurants d’Amiens Centre-Ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025
+</div>
 
 <!-- POPUP -->
-<div class="popup-overlay" id="popupOverlay">
+<div class="popup-bg" id="popupBg">
     <div class="popup">
-        <button class="close-popup" onclick="closePopup()">✕</button>
-        <img id="popupImg" src="">
+        <img id="popupImg" src="" alt="">
+        <div class="close-btn" onclick="closePopup()">Fermer</div>
     </div>
 </div>
 
 <script>
-/* tableau final validé */
+/* -----------------
+   CONFIG IMAGES OFFRES
+-------------------*/
 const offers = {
     9:  "09_12.png",
     10: "09_12 (3).png",
@@ -224,42 +213,44 @@ const offers = {
     24: "24_12.png"
 };
 
-const futureImg = "09_12 (2).png";
 const expiredImg = "offre-expiree.png";
 
-function getToday() {
-    const test = document.getElementById("testDate").value;
-    return test ? new Date(test+"T00:00:00") : new Date();
-}
+/* --- Test mode --- */
+let testDay = 0;
+document.getElementById("testSelect").addEventListener("change", e => {
+    testDay = parseInt(e.target.value);
+});
 
-function openPopup(src) {
-    document.getElementById("popupImg").src = src;
-    document.getElementById("popupOverlay").style.display = "flex";
-}
+/* --- Ouvrir une case --- */
+document.querySelectorAll(".day").forEach(box => {
+    box.addEventListener("click", function() {
+        const day = parseInt(this.dataset.day);
 
-function closePopup() {
-    document.getElementById("popupOverlay").style.display = "none";
-}
-
-document.querySelectorAll(".day").forEach(day => {
-    day.addEventListener("click", () => {
-        const number = parseInt(day.dataset.day);
-        const today = getToday();
-        const offerDate = new Date(`2025-12-${String(number).padStart(2,'0')}T00:00:00`);
-
-        if (today < offerDate) {
-            openPopup(futureImg);
-            return;
+        let today;
+        if (testDay !== 0) today = testDay;
+        else {
+            const now = new Date();
+            today = now.getDate();
         }
 
-        if (today > offerDate) {
-            openPopup(expiredImg);
-            return;
+        let img = "";
+        if (today < day) {
+            img = "09_12 (2).png";  // rien à voir ici
+        } else if (today > day) {
+            img = expiredImg;
+        } else {
+            img = offers[day];
         }
 
-        openPopup(offers[number]);
+        document.getElementById("popupImg").src = img;
+        document.getElementById("popupBg").style.display = "flex";
     });
 });
+
+/* Fermer popup */
+function closePopup() {
+    document.getElementById("popupBg").style.display = "none";
+}
 </script>
 
 </body>
