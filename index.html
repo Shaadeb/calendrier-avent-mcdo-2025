@@ -6,120 +6,136 @@
 <title>Calendrier de l'Avent 2025</title>
 
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        color: white;
-        overflow-x: hidden;
-    }
+/* ------------------------ */
+/* 🟥 FOND ROUGE + FLOCONS  */
+/* ------------------------ */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    overflow-x: hidden;
+    background: #b30000; /* Rouge de base */
+}
 
-    /* --- FOND FLOCONS (TON DESIGN) --- */
-    body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background: url('fond.png') center/cover no-repeat;
-        z-index: -1;
-    }
+/* Flocons générés automatiquement */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle, white 2px, transparent 2px) 0 0/50px 50px,
+        radial-gradient(circle, white 1.5px, transparent 1.5px) 25px 25px/60px 60px,
+        radial-gradient(circle, white 1px, transparent 1px) 40px 10px/35px 35px;
+    opacity: 0.8;
+    z-index: -1;
+}
 
-    h1 {
-        margin-top: 30px;
-        font-size: 32px;
-        font-weight: bold;
-    }
+h1 {
+    margin-top: 25px;
+    font-size: 34px;
+    font-weight: bold;
+}
 
-    h2 {
-        margin-top: -10px;
-        font-size: 16px;
-        font-weight: normal;
-    }
+h2 {
+    margin-top: -5px;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
 
-    /* Conteneur du calendrier */
-    .calendar {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-        max-width: 700px;
-        margin: 40px auto;
-        padding: 20px;
-    }
+/* ------------------------ */
+/* 🟨 CALENDRIER */
+/* ------------------------ */
 
-    /* Cases du calendrier */
-    .day {
-        background: rgba(255, 255, 255, 0.95);
-        color: #b38b00;
-        font-size: 40px;
-        font-weight: bold;
-        padding: 20px 0;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 720px;
+    margin: 0 auto 30px;
+    padding: 20px;
+}
 
-    .day:hover {
-        transform: scale(1.05);
-    }
+.day {
+    background: white;
+    color: #caa532;
+    font-size: 40px;
+    font-weight: bold;
+    padding: 22px 0;
+    border-radius: 22px;
+    box-shadow: 0 4px 0 #e6d59b;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
 
-    /* Case du 24 (dorée) */
-    .special {
-        background: #d9b24a;
-        color: white;
-    }
+.day:hover {
+    transform: scale(1.05);
+}
 
-    /* Pop-up */
-    .popup-bg {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.7);
-        justify-content: center;
-        align-items: center;
-        z-index: 10;
-    }
+/* Case du 24 dorée */
+.special {
+    background: #d9b24a;
+    color: white;
+}
 
-    .popup {
-        background: white;
-        border-radius: 20px;
-        padding: 10px;
-        max-width: 90%;
-        width: 350px;
-    }
+/* ------------------------ */
+/* POP-UP */
+/* ------------------------ */
+.popup-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
 
-    .popup img {
-        width: 100%;
-        border-radius: 15px;
-    }
+.popup {
+    background: white;
+    border-radius: 20px;
+    padding: 12px;
+    max-width: 90%;
+    width: 350px;
+}
 
-    .close-btn {
-        margin-top: 10px;
-        background: #d9b24a;
-        padding: 10px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        color: white;
-        font-weight: bold;
-        display: inline-block;
-    }
+.popup img {
+    width: 100%;
+    border-radius: 15px;
+}
 
-      /* Mentions légales */  
-    .mentions {
-        margin-top: 20px;
-        font-size: 12px;
-        opacity: 0.9;
-    }
+.close-btn {
+    margin-top: 10px;
+    background: #d9b24a;
+    padding: 10px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-    /* TEST MODE */
-    #testBox {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        z-index: 20;
-        background: white;
-        color: black;
-        padding: 10px;
-        border-radius: 10px;
-    }
+/* ------------------------ */
+/* MENTIONS */
+/* ------------------------ */
+.mentions {
+    margin-bottom: 25px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+}
+
+/* ------------------------ */
+/* MODE TEST */
+/* ------------------------ */
+#testBox {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 30;
+    background: white;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+}
 
 </style>
 </head>
@@ -153,7 +169,7 @@
     </select>
 </div>
 
-<!-- CALENDRIER -->
+<!-- CALENDRIER (même disposition que ton design) -->
 <div class="calendar">
 
     <div class="day" data-day="10">10</div>
@@ -179,7 +195,7 @@
 </div>
 
 <div class="mentions">
-    Offres valables dans les restaurants d’Amiens Centre-Ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025
+Offres valables dans les restaurants d’Amiens Centre-Ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025
 </div>
 
 <!-- POPUP -->
@@ -191,9 +207,7 @@
 </div>
 
 <script>
-/* -----------------
-   CONFIG IMAGES OFFRES
--------------------*/
+/* IMAGES DES OFFRES — ordre EXACT comme tu l’as demandé */
 const offers = {
     9:  "09_12.png",
     10: "09_12 (3).png",
@@ -213,41 +227,39 @@ const offers = {
     24: "24_12.png"
 };
 
+/* Image "rien à voir ici" */
+const tooSoon = "09_12 (2).png";
+
+/* Image "offre expirée" */
 const expiredImg = "offre-expiree.png";
 
-/* --- Test mode --- */
 let testDay = 0;
+
+/* Mode test */
 document.getElementById("testSelect").addEventListener("change", e => {
     testDay = parseInt(e.target.value);
 });
 
-/* --- Ouvrir une case --- */
+/* Gestion du clic sur une case */
 document.querySelectorAll(".day").forEach(box => {
     box.addEventListener("click", function() {
         const day = parseInt(this.dataset.day);
 
         let today;
         if (testDay !== 0) today = testDay;
-        else {
-            const now = new Date();
-            today = now.getDate();
-        }
+        else today = new Date().getDate();
 
         let img = "";
-        if (today < day) {
-            img = "09_12 (2).png";  // rien à voir ici
-        } else if (today > day) {
-            img = expiredImg;
-        } else {
-            img = offers[day];
-        }
+
+        if (today < day) img = tooSoon;
+        else if (today > day) img = expiredImg;
+        else img = offers[day];
 
         document.getElementById("popupImg").src = img;
         document.getElementById("popupBg").style.display = "flex";
     });
 });
 
-/* Fermer popup */
 function closePopup() {
     document.getElementById("popupBg").style.display = "none";
 }
