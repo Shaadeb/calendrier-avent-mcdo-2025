@@ -46,32 +46,6 @@
       100% { transform: translateY(110vh) translateX(20px); }
     }
 
-    /* Mode test */
-    .test-panel {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.55);
-      border: 1px solid rgba(255,255,255,0.5);
-      padding: 6px 10px;
-      font-size: 0.7rem;
-      border-radius: 999px;
-      backdrop-filter: blur(6px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .test-panel select {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: #fff;
-      padding: 2px 4px;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-
     .page-wrapper {
       width: 100%;
       max-width: 950px;
@@ -221,30 +195,6 @@
   }
 </script>
 
-<!-- Mode test -->
-<div class="test-panel">
-  Test :
-  <select id="simulate-day">
-    <option value="">Aujourd’hui</option>
-    <option value="9">9</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option>
-    <option value="13">13</option>
-    <option value="14">14</option>
-    <option value="15">15</option>
-    <option value="16">16</option>
-    <option value="17">17</option>
-    <option value="18">18</option>
-    <option value="19">19</option>
-    <option value="20">20</option>
-    <option value="21">21</option>
-    <option value="22">22</option>
-    <option value="23">23</option>
-    <option value="24">24</option>
-  </select>
-</div>
-
 <div class="page-wrapper">
 
   <div class="logo-wrap">
@@ -310,21 +260,19 @@
     expired: "offre-expiree.png"
   };
 
-  let simulatedDay = null;
-
-  function getBaseDate() {
-    return simulatedDay ? new Date(CALENDAR_YEAR, 11, simulatedDay) : new Date();
+  function getToday() {
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    return now;
   }
 
   function getDayStatus(day) {
-    const now = getBaseDate();
-    now.setHours(0,0,0,0);
-
+    const today = getToday();
     const date = new Date(CALENDAR_YEAR, 11, day);
     date.setHours(0,0,0,0);
 
-    if (now < date) return "locked";
-    if (now.getTime() === date.getTime()) return "current";
+    if (today < date) return "locked";
+    if (today.getTime() === date.getTime()) return "current";
     return "expired";
   }
 
@@ -416,11 +364,6 @@
 
   document.getElementById("offer-modal-backdrop").addEventListener("click", (e) => {
     if (e.target.id === "offer-modal-backdrop") e.target.classList.remove("active");
-  });
-
-  document.getElementById("simulate-day").addEventListener("change", (e) => {
-    simulatedDay = e.target.value ? parseInt(e.target.value) : null;
-    buildCalendar();
   });
 
   window.addEventListener("DOMContentLoaded", () => {
