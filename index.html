@@ -30,6 +30,7 @@
       overflow-x: hidden;
     }
 
+    /* ❄ Neige */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -45,6 +46,7 @@
       100% { transform: translateY(110vh) translateX(20px); }
     }
 
+    /* Mode test */
     .test-panel {
       position: fixed;
       top: 10px;
@@ -60,7 +62,6 @@
       align-items: center;
       gap: 6px;
     }
-
     .test-panel select {
       background: rgba(255,255,255,0.2);
       border: none;
@@ -87,6 +88,7 @@
     .hero-title span { color: var(--gold); }
     .hero-subtitle { font-size: 0.95rem; opacity: 0.9; max-width: 580px; margin: 0 auto 10px; line-height: 1.4; }
 
+    /* Carte calendrier */
     .calendar-card {
       background: rgba(255, 255, 255, 0.06);
       border-radius: 28px;
@@ -104,6 +106,7 @@
     .calendar-heading { font-size: 1.1rem; font-weight: 500; }
     .calendar-date-range { font-size: 0.85rem; opacity: 0.9; }
 
+    /* Grille */
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -139,8 +142,6 @@
     .day--locked { opacity: 0.7; cursor: not-allowed; }
     .day--locked::after { content: "🔒"; position: absolute; top: 8px; right: 8px; font-size: 0.9rem; }
 
-    .day--expired .day-label { color: #555; }
-
     .footer-note {
       text-align: center;
       font-size: 0.7rem;
@@ -149,6 +150,7 @@
       line-height: 1.4;
     }
 
+    /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -201,8 +203,10 @@
     }
   </style>
 </head>
+
 <body>
 
+<!-- Neige -->
 <script>
   for (let i = 0; i < 35; i++) {
     const s = document.createElement("div");
@@ -217,6 +221,7 @@
   }
 </script>
 
+<!-- Mode test -->
 <div class="test-panel">
   Test :
   <select id="simulate-day">
@@ -241,6 +246,7 @@
 </div>
 
 <div class="page-wrapper">
+
   <div class="logo-wrap">
     <img src="logo-mcdonalds.png" alt="Logo McDonald's™" class="logo">
   </div>
@@ -248,8 +254,8 @@
   <header class="hero">
     <h1 class="hero-title">Calendrier de l'Avent <span>2025</span></h1>
     <p class="hero-subtitle">
-      16 jours de surprises spécialement imaginées pour vous régaler pendant les fêtes ✨<br>
-      Chaque jour une offre unique… à découvrir en ouvrant votre case !
+      16 jours de surprises pour vous régaler tout au long des fêtes ✨<br>
+      Une nouvelle offre à découvrir chaque jour !
     </p>
   </header>
 
@@ -268,21 +274,23 @@
   </section>
 </div>
 
+<!-- Modal -->
 <div class="modal-backdrop" id="offer-modal-backdrop">
   <div class="modal">
     <button class="modal-close" id="modal-close">×</button>
     <h2 id="modal-title"></h2>
-    <img id="modal-image" src="" alt="">
+    <img id="modal-image" src="">
     <p id="modal-text"></p>
   </div>
 </div>
 
 <script>
   const CALENDAR_YEAR = 2025;
+
   const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
 
   const IMAGES = {
-    9:  "09_12 (15).png",
+    9:  "09_12.png",
     10: "09_12 (3).png",
     11: "09_12 (4).png",
     12: "09_12 (5).png",
@@ -295,8 +303,8 @@
     19: "09_12 (12).png",
     20: "09_12 (13).png",
     21: "09_12 (14).png",
-    22: "09_12 (16).png",
-    23: "09_12.png",
+    22: "09_12 (15).png",
+    23: "09_12 (16).png",
     24: "24_12.png",
     locked: "09_12 (2).png",
     expired: "offre-expiree.png"
@@ -309,14 +317,14 @@
   }
 
   function getDayStatus(day) {
-    const base = getBaseDate();
-    base.setHours(0,0,0,0);
+    const now = getBaseDate();
+    now.setHours(0,0,0,0);
 
-    const openDate = new Date(CALENDAR_YEAR, 11, day);
-    openDate.setHours(0,0,0,0);
+    const date = new Date(CALENDAR_YEAR, 11, day);
+    date.setHours(0,0,0,0);
 
-    if (base < openDate) return "locked";
-    if (base.getTime() === openDate.getTime()) return "current";
+    if (now < date) return "locked";
+    if (now.getTime() === date.getTime()) return "current";
     return "expired";
   }
 
@@ -353,6 +361,7 @@
 
   function openModal(day) {
     const status = getDayStatus(day);
+
     const modal = document.getElementById("offer-modal-backdrop");
     const title = document.getElementById("modal-title");
     const img = document.getElementById("modal-image");
@@ -361,7 +370,10 @@
     if (status === "locked") {
       title.textContent = "Rien à voir ici… pour le moment 🎁";
       img.src = IMAGES.locked;
-      text.innerHTML = "Cette case s’ouvrira le " + formatDateFr(day) + ". Patience !";
+      text.innerHTML = `
+        Cette case s’ouvrira le ${formatDateFr(day)}.<br>
+        Patience !
+      `;
     }
 
     else if (status === "current") {
@@ -375,7 +387,7 @@
         `;
       } else {
         text.innerHTML = `
-          <strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong><br>
+          <strong>Disponible via l’onglet "Avantages" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.</strong><br>
           Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
         `;
       }
@@ -387,7 +399,7 @@
 
       let rule = (day === 16 || day === 24)
         ? "<strong>Offre valable sur présentation de cette case au comptoir.</strong>"
-        : "<strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong>";
+        : "<strong>Disponible via l’onglet \"Avantages\" en borne, au comptoir, au McDrive™ ou sur l’application McDo+.</strong>";
 
       text.innerHTML = `
         Cette offre était valable le ${formatDateFr(day)}.<br>
