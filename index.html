@@ -1,229 +1,288 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Calendrier de l'Avent 2025</title>
+  <meta charset="UTF-8" />
+  <title>Calendrier de l'Avent 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-<style>
-/* ------------------------ */
-/* 🟥 FOND ROUGE PREMIUM    */
-/* ------------------------ */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-    text-align: center;
-    background: linear-gradient(180deg, #b30000 0%, #a00000 100%);
-    overflow-x: hidden;
-}
+  <style>
+    :root {
+      --bg-top: #c8102e;
+      --bg-bottom: #8a0017;
+      --gold: #f5d264;
+      --gold-dark: #d5ae3d;
+      --red: #b70015;
+      --white: #ffffff;
+    }
 
-/* ❄️ Flocons ultra légers */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-        radial-gradient(circle, rgba(255,255,255,0.5) 2px, transparent 2px) 0 0/50px 50px,
-        radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px) 25px 25px/60px 60px,
-        radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px) 40px 10px/35px 35px;
-    opacity: 0.4;
-    z-index: -1;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ------------------------ */
-/* TITRES */
-/* ------------------------ */
-h1 {
-    margin-top: 30px;
-    font-size: 34px;
-    font-weight: bold;
-    color: white;
-}
+    body {
+      font-family: "Poppins", system-ui, sans-serif;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, var(--bg-top), var(--bg-bottom));
+      color: var(--white);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px 12px 60px;
+      overflow-x: hidden;
+    }
 
-h2 {
-    margin-top: -5px;
-    font-size: 16px;
-    color: #f5d98a;
-}
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #fff;
+      font-size: 1em;
+      opacity: 0.8;
+      animation: fall linear infinite;
+      z-index: 5;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10px) translateX(0); }
+      100% { transform: translateY(110vh) translateX(20px); }
+    }
 
-/* ------------------------ */
-/* CALENDRIER */
-/* ------------------------ */
-.calendar-wrapper {
-    max-width: 750px;
-    margin: 40px auto;
-    padding: 25px;
-    border-radius: 25px;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 25px rgba(255,255,255,0.15);
-}
+    .test-panel {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 6px 10px;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.calendar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-}
+    .test-panel select {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      padding: 2px 4px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
 
-/* CASES */
-.day {
-    background: white;
-    color: #d4b44c;
-    font-size: 38px;
-    font-weight: bold;
-    padding: 22px 0;
-    border-radius: 20px;
-    box-shadow: 0 4px 0 #e4d6a1;
-    cursor: pointer;
-    transition: 0.2s;
-}
+    .page-wrapper {
+      width: 100%;
+      max-width: 950px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
 
-.day:hover {
-    transform: scale(1.07);
-}
+    .logo-wrap { display: flex; justify-content: center; margin-bottom: 8px; }
+    .logo { width: 70px; height: auto; }
 
-/* CASE 24 */
-.special {
-    background: #d4b44c;
-    color: white;
-}
+    .hero { text-align: center; margin-bottom: 16px; }
+    .hero-title { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 600; margin-bottom: 6px; }
+    .hero-title span { color: var(--gold); }
+    .hero-subtitle { font-size: 0.95rem; opacity: 0.9; max-width: 580px; margin: 0 auto 10px; line-height: 1.4; }
 
-/* ------------------------ */
-/* POP-UP */
-/* ------------------------ */
-.popup-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.78);
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
+    .calendar-card {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 40px rgba(245, 210, 100, 0.35);
+      padding: 20px 18px 18px;
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 40px rgba(245, 210, 100, 0.2); }
+      to   { box-shadow: 0 0 80px rgba(245, 210, 100, 0.6); }
+    }
 
-.popup {
-    background: white;
-    border-radius: 20px;
-    padding: 12px;
-    max-width: 90%;
-    width: 360px;
-}
+    .calendar-header { text-align: center; margin-bottom: 20px; }
+    .calendar-heading { font-size: 1.1rem; font-weight: 500; }
+    .calendar-date-range { font-size: 0.85rem; opacity: 0.9; }
 
-.popup img {
-    width: 100%;
-    border-radius: 15px;
-}
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      justify-items: center;
+    }
 
-.close-btn {
-    margin-top: 10px;
-    background: #d4b44c;
-    padding: 10px 20px;
-    border-radius: 12px;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-}
+    .day {
+      border-radius: 18px;
+      background: var(--white);
+      border: 2px solid var(--white);
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      min-height: 90px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--gold-dark);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+      position: relative;
+    }
 
-/* ------------------------ */
-/* MENTIONS */
-/* ------------------------ */
-.mentions {
-    margin-top: 25px;
-    margin-bottom: 40px;
-    font-size: 12px;
-    opacity: 0.85;
-}
+    .day-number { font-size: 1.6rem; font-weight: 600; }
+    .day-label { font-size: 0.7rem; text-transform: uppercase; color: var(--red); }
 
-/* ------------------------ */
-/* MODE TEST */
-/* ------------------------ */
-#testBox {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: white;
-    color: black;
-    padding: 10px;
-    border-radius: 10px;
-    z-index: 30;
-}
-</style>
+    .day--open:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+    }
+    .day--locked { opacity: 0.7; cursor: not-allowed; }
+    .day--locked::after { content: "🔒"; position: absolute; top: 8px; right: 8px; font-size: 0.9rem; }
+
+    .day--expired .day-label { color: #555; }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.7rem;
+      opacity: 0.9;
+      margin-top: 12px;
+      line-height: 1.4;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 16px;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal {
+      background: radial-gradient(circle at top, #c8102e, #8a0017);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.16);
+      max-width: 480px;
+      width: 100%;
+      padding: 18px;
+      box-shadow: 0 22px 55px rgba(0,0,0,0.65);
+      position: relative;
+      color: #fff;
+      text-align: center;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .modal img {
+      width: 100%;
+      border-radius: 12px;
+      margin: 8px 0;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #fff;
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>Calendrier de l'Avent 2025</h1>
-<h2>Découvrez des offres exclusives chaque jour !</h2>
+<script>
+  for (let i = 0; i < 35; i++) {
+    const s = document.createElement("div");
+    s.classList.add("snowflake");
+    s.textContent = "❄";
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (4 + Math.random() * 7) + "s";
+    s.style.fontSize = (10 + Math.random() * 8) + "px";
+    s.style.opacity = 0.5 + Math.random() * 0.5;
+    s.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(s);
+  }
+</script>
 
-<!-- MODE TEST -->
-<div id="testBox">
-    Mode test :
-    <select id="testSelect">
-        <option value="0">— Désactivé —</option>
-        <option value="9">9 décembre</option>
-        <option value="10">10 décembre</option>
-        <option value="11">11 décembre</option>
-        <option value="12">12 décembre</option>
-        <option value="13">13 décembre</option>
-        <option value="14">14 décembre</option>
-        <option value="15">15 décembre</option>
-        <option value="16">16 décembre</option>
-        <option value="17">17 décembre</option>
-        <option value="18">18 décembre</option>
-        <option value="19">19 décembre</option>
-        <option value="20">20 décembre</option>
-        <option value="21">21 décembre</option>
-        <option value="22">22 décembre</option>
-        <option value="23">23 décembre</option>
-        <option value="24">24 décembre</option>
-    </select>
+<div class="test-panel">
+  Test :
+  <select id="simulate-day">
+    <option value="">Aujourd’hui</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+    <option value="24">24</option>
+  </select>
 </div>
 
-<!-- CALENDRIER -->
-<div class="calendar-wrapper">
-<div class="calendar">
+<div class="page-wrapper">
+  <div class="logo-wrap">
+    <img src="logo-mcdonalds.png" alt="Logo McDonald's™" class="logo">
+  </div>
 
-    <div class="day" data-day="10">10</div>
-    <div class="day" data-day="22">22</div>
-    <div class="day" data-day="18">18</div>
-    <div class="day" data-day="15">15</div>
+  <header class="hero">
+    <h1 class="hero-title">Calendrier de l'Avent <span>2025</span></h1>
+    <p class="hero-subtitle">
+      16 jours de surprises spécialement imaginées pour vous régaler pendant les fêtes ✨<br>
+      Chaque jour une offre unique… à découvrir en ouvrant votre case !
+    </p>
+  </header>
 
-    <div class="day" data-day="17">17</div>
-    <div class="day" data-day="14">14</div>
-    <div class="day" data-day="21">21</div>
-    <div class="day" data-day="20">20</div>
-
-    <div class="day" data-day="12">12</div>
-    <div class="day" data-day="19">19</div>
-    <div class="day" data-day="23">23</div>
-    <div class="day" data-day="16">16</div>
-
-    <div class="day" data-day="11">11</div>
-    <div class="day" data-day="9">9</div>
-    <div class="day" data-day="13">13</div>
-    <div class="day special" data-day="24">24</div>
-
-</div>
-</div>
-
-<div class="mentions">
-Offres valables dans les restaurants d’Amiens Centre-Ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025
-</div>
-
-<!-- POPUP -->
-<div class="popup-bg" id="popupBg">
-    <div class="popup">
-        <img id="popupImg" src="">
-        <div class="close-btn" onclick="closePopup()">Fermer</div>
+  <section class="calendar-card">
+    <div class="calendar-header">
+      <div class="calendar-heading">🎁 16 jours de surprises 🎁</div>
+      <div class="calendar-date-range">Du 9 au 24 décembre</div>
     </div>
+
+    <div class="calendar-grid" id="calendar-grid"></div>
+
+    <p class="footer-note">
+      Offres valables dans les restaurants d’Amiens centre-ville, Amiens Glisy, Montdidier et Breteuil — © McDonald’s™ 2025<br>
+      Offres non cumulables. Dans la limite des stocks disponibles. Photos non contractuelles.
+    </p>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="offer-modal-backdrop">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">×</button>
+    <h2 id="modal-title"></h2>
+    <img id="modal-image" src="" alt="">
+    <p id="modal-text"></p>
+  </div>
 </div>
 
 <script>
-/* ------------------------
-   IMAGES OFFRES
-------------------------- */
-const offers = {
-    9:  "09_12.png",
+  const CALENDAR_YEAR = 2025;
+  const ORDER = [10,22,18,15,17,14,21,20,12,19,23,16,11,9,13,24];
+
+  const IMAGES = {
+    9:  "09_12 (15).png",
     10: "09_12 (3).png",
     11: "09_12 (4).png",
     12: "09_12 (5).png",
@@ -236,43 +295,125 @@ const offers = {
     19: "09_12 (12).png",
     20: "09_12 (13).png",
     21: "09_12 (14).png",
-    22: "09_12 (15).png",
-    23: "09_12 (16).png",
-    24: "24_12.png"
-};
+    22: "09_12 (16).png",
+    23: "09_12.png",
+    24: "24_12.png",
+    locked: "09_12 (2).png",
+    expired: "offre-expiree.png"
+  };
 
-const tooSoon = "09_12 (2).png";
-const expired = "offre-expiree.png";
+  let simulatedDay = null;
 
-let testDay = 0;
+  function getBaseDate() {
+    return simulatedDay ? new Date(CALENDAR_YEAR, 11, simulatedDay) : new Date();
+  }
 
-/* Mode test */
-document.getElementById("testSelect").addEventListener("change", e => {
-    testDay = parseInt(e.target.value);
-});
+  function getDayStatus(day) {
+    const base = getBaseDate();
+    base.setHours(0,0,0,0);
 
-/* Ouverture popup */
-document.querySelectorAll(".day").forEach(el => {
-    el.addEventListener("click", () => {
-        const day = parseInt(el.dataset.day);
+    const openDate = new Date(CALENDAR_YEAR, 11, day);
+    openDate.setHours(0,0,0,0);
 
-        let today;
-        if (testDay !== 0) today = testDay;
-        else today = new Date().getDate();
+    if (base < openDate) return "locked";
+    if (base.getTime() === openDate.getTime()) return "current";
+    return "expired";
+  }
 
-        let img;
-        if (today < day) img = tooSoon;
-        else if (today > day) img = expired;
-        else img = offers[day];
+  function buildCalendar() {
+    const grid = document.getElementById("calendar-grid");
+    grid.innerHTML = "";
 
-        document.getElementById("popupImg").src = img;
-        document.getElementById("popupBg").style.display = "flex";
+    ORDER.forEach(day => {
+      const status = getDayStatus(day);
+      const card = document.createElement("button");
+      card.className = "day";
+
+      if (status === "locked") card.classList.add("day--locked");
+      else card.classList.add("day--open");
+      if (status === "expired") card.classList.add("day--expired");
+
+      let label = "Disponible";
+      if (status === "locked") label = "Bientôt";
+      else if (status === "expired") label = "Expirée";
+
+      card.innerHTML = `
+        <div class="day-number">${day}</div>
+        <div class="day-label">${label}</div>
+      `;
+      card.addEventListener("click", () => openModal(day));
+      grid.appendChild(card);
     });
-});
+  }
 
-function closePopup() {
-    document.getElementById("popupBg").style.display = "none";
-}
+  function formatDateFr(day) {
+    const d = new Date(CALENDAR_YEAR, 11, day);
+    return d.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  }
+
+  function openModal(day) {
+    const status = getDayStatus(day);
+    const modal = document.getElementById("offer-modal-backdrop");
+    const title = document.getElementById("modal-title");
+    const img = document.getElementById("modal-image");
+    const text = document.getElementById("modal-text");
+
+    if (status === "locked") {
+      title.textContent = "Rien à voir ici… pour le moment 🎁";
+      img.src = IMAGES.locked;
+      text.innerHTML = "Cette case s’ouvrira le " + formatDateFr(day) + ". Patience !";
+    }
+
+    else if (status === "current") {
+      title.textContent = "Offre du " + day + " décembre";
+      img.src = IMAGES[day];
+
+      if (day === 16 || day === 24) {
+        text.innerHTML = `
+          <strong>Offre valable sur présentation de cette case au comptoir.</strong><br>
+          Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
+        `;
+      } else {
+        text.innerHTML = `
+          <strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong><br>
+          Offre non cumulable, valable uniquement le ${formatDateFr(day)}.
+        `;
+      }
+    }
+
+    else {
+      title.textContent = "Offre expirée";
+      img.src = IMAGES.expired;
+
+      let rule = (day === 16 || day === 24)
+        ? "<strong>Offre valable sur présentation de cette case au comptoir.</strong>"
+        : "<strong>Disponible via l’onglet Avantages en borne ou sur l’application McDo+.</strong>";
+
+      text.innerHTML = `
+        Cette offre était valable le ${formatDateFr(day)}.<br>
+        ${rule}
+      `;
+    }
+
+    modal.classList.add("active");
+  }
+
+  document.getElementById("modal-close").addEventListener("click", () => {
+    document.getElementById("offer-modal-backdrop").classList.remove("active");
+  });
+
+  document.getElementById("offer-modal-backdrop").addEventListener("click", (e) => {
+    if (e.target.id === "offer-modal-backdrop") e.target.classList.remove("active");
+  });
+
+  document.getElementById("simulate-day").addEventListener("change", (e) => {
+    simulatedDay = e.target.value ? parseInt(e.target.value) : null;
+    buildCalendar();
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    buildCalendar();
+  });
 </script>
 
 </body>
